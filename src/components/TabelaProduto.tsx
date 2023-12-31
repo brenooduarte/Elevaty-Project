@@ -1,13 +1,15 @@
 import { IconEye, IconTrash } from "@tabler/icons-react";
-import { IProduto } from "../types/Produto";
+import { useContext } from "react";
+import { FiltroContext } from "../context/FiltroContext";
 
 interface TabelaProdutoProps {
-    produtos: IProduto[]
     removerProduto: (idProduto: number) => void 
     visualizarProduto: (idProduto: number) => void 
 }
 
-const TabelaProduto = ({produtos, removerProduto, visualizarProduto}: TabelaProdutoProps) => {
+const TabelaProduto = ({removerProduto, visualizarProduto}: TabelaProdutoProps) => {
+
+    const context = useContext(FiltroContext);
 
   return (
     <div className="mt-5 drop-shadow-xl">
@@ -36,7 +38,7 @@ const TabelaProduto = ({produtos, removerProduto, visualizarProduto}: TabelaProd
                         </tr>
                     </thead>
                     <tbody>
-                        {produtos.map((produto, index) => (
+                        {context?.produtos.map((produto, index) => (
                         <TableRow
                             key={index}
                             Id={produto.id}
