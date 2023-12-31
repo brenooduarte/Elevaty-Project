@@ -2,20 +2,22 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { IProduto } from "../types/Produto";
-import { FiltroContext } from "../context/FiltroContext";
+import { ProdutoContext } from "../context/ProdutoContext";
 
 const Filtro = () => {
 
-    const context = useContext(FiltroContext);
+    const context = useContext(ProdutoContext);
     const [precoMinimo, setprecoMinimo] = useState(0);
     const [precoMaximo, setprecoMaximo] = useState(0);
+
+    const QUANTITY = 100;
 
     const getProdutosPorPrecoMinimoEMaximo = async (e: React.SyntheticEvent) => {
         try {
             e.preventDefault()
 
             const response = await axios.get<{ data: IProduto[] }>
-                (`https://fakerapi.it/api/v1/products?_price_min=${precoMinimo}&_price_max=${precoMaximo}`);
+                (`https://fakerapi.it/api/v1/products?_price_min=${precoMinimo}&_price_max=${precoMaximo}&_quantity=${QUANTITY}`);
             context?.setProdutos(response.data.data);
           
             if (context?.produtos.length == 0) {

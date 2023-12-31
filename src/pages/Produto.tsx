@@ -6,17 +6,19 @@ import ProdutoDetalhado from "../components/ProdutoDetalhado";
 import TabelaProduto from "../components/TabelaProduto";
 import Paginacao from "../components/Paginacao";
 import Cabecalho from "../components/Cabecalho";
-import { FiltroContext } from "../context/FiltroContext";
+import { ProdutoContext } from "../context/ProdutoContext";
 
 const Produto = () => {
-  // const [produtos, setProdutos] = useState<IProduto[]>([]);
+
   const [produtosFiltrados, setProdutoFiltrados] = useState<IProduto[]>([]);
   const [produtoSelecionado, setProdutoSelecionado] = useState<IProduto>({description:"", ean:"", id:0, name:"", price:"", image:"", taxes:""});
   const [openClose, setOpenClose] = useState(false);
-  const LIMIT = 10;
   const [offset, setOffset] = useState(0);
 
-  const context = useContext(FiltroContext);
+  const LIMIT = 10;
+  const QUANTITY = 100;
+
+  const context = useContext(ProdutoContext);
 
   const handleVoltar = () => {
     setOpenClose(!openClose);
@@ -25,7 +27,7 @@ const Produto = () => {
   useEffect(() => {
     const getProdutos = async () => {
       try {
-        const response = await axios.get<{ data: IProduto[] }>("https://fakerapi.it/api/v1/products");
+        const response = await axios.get<{ data: IProduto[] }>(`https://fakerapi.it/api/v1/products?_quantity=${QUANTITY}`);
         context?.setProdutos(response.data.data);
         
       } catch (error) {

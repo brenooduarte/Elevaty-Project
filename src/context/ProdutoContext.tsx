@@ -1,23 +1,23 @@
 import { ReactNode, createContext, useState } from "react";
 import { IProduto } from "../types/Produto";
 
-export interface FiltroContextType {
+export interface ProdutoContextType {
     produtos: IProduto[];
     setProdutos: React.Dispatch<React.SetStateAction<IProduto[]>>;
 }
 
-export const FiltroContext = createContext<FiltroContextType | null>(null);
+export const ProdutoContext = createContext<ProdutoContextType | null>(null);
 
-interface FiltrosProviderProps {
+interface ProdutosProviderProps {
     children: ReactNode;
 }
 
-export const FiltroProvider = ({ children }: FiltrosProviderProps) => {
+export const ProdutoProvider = ({ children }: ProdutosProviderProps) => {
   const [produtos, setProdutos] = useState<IProduto[]>([]);
 
   return (
-    <FiltroContext.Provider value={{ produtos, setProdutos }}>
+    <ProdutoContext.Provider value={{ produtos, setProdutos }}>
       {children}
-    </FiltroContext.Provider>
+    </ProdutoContext.Provider>
   );
 };
