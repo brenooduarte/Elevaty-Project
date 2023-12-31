@@ -1,16 +1,13 @@
 import { IconEye, IconTrash } from "@tabler/icons-react";
-import { useContext } from "react";
-import { ProdutoContext } from "../context/ProdutoContext";
+import { IProduto } from "../types/Produto";
 
 interface TabelaProdutoProps {
     removerProduto: (idProduto: number) => void 
     visualizarProduto: (idProduto: number) => void 
+    produtos: IProduto[]
 }
 
-const TabelaProduto = ({removerProduto, visualizarProduto}: TabelaProdutoProps) => {
-
-    const context = useContext(ProdutoContext);
-
+const TabelaProduto = ({ produtos, removerProduto, visualizarProduto }: TabelaProdutoProps) => {
   return (
     <div className="mt-5 drop-shadow-xl">
         <div className="flex flex-col">
@@ -38,7 +35,7 @@ const TabelaProduto = ({removerProduto, visualizarProduto}: TabelaProdutoProps) 
                         </tr>
                     </thead>
                     <tbody>
-                        {context?.produtos.map((produto, index) => (
+                        {produtos.map((produto, index) => (
                         <TableRow
                             key={index}
                             Id={produto.id}

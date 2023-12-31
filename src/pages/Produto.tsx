@@ -91,8 +91,8 @@ const Produto = () => {
 
         {produtosFiltrados.length > 0 
 
-        ? <TabelaProduto removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
-        : <TabelaProduto removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
+        ? <TabelaProduto produtos={produtosFiltrados} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
+        : <TabelaProduto produtos={context?.produtos ? context?.produtos : []} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
         
         }
 
