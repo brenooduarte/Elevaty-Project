@@ -18,21 +18,19 @@ const Cabecalho = ({ search }: CabecalhoProps) => {
   };
 
   return (
-    <div className="flex bg-gray-800 pt-5 pb-5 border-b-4">
-      <div className="w-2/3">
-          <BarraPesquisa search={search} />
-          <button
-              className={`px-2 py-1 float-right mr-16 rounded-full ${mostrarFiltro ? 'transition duration-300 bg-mint-green text-gray-800' : 'transition duration-300 border border-green-300 text-white'}`}
-              onClick={handleToggleFiltro}
-          >
-              <span className="inline-block mr-2">Filtro</span>
-          </button>
+    <div className="flex justify-center items-center top-0 w-screen bg-gray-800 pt-5 pb-5 border-b-4">
+      <div className="flex justify-center gap-12 items-center">
+        <button
+            className={`px-2 py-1 float-right rounded-full ${mostrarFiltro ? 'transition duration-300 bg-mint-green text-gray-800' : 'transition duration-300 border border-green-300 text-white'}`}
+            onClick={handleToggleFiltro}
+        >
+            <span className="inline-block mr-2">Filtro</span>
+        </button>
 
-          {mostrarFiltro && <Filtro />}
+        {mostrarFiltro && <Filtro />}
 
-      </div>
+        <BarraPesquisa search={search} />
 
-      <div className="w-1/3">
         <button
           type="submit"
           className="text-white px-2 py-1 border rounded-full border-green-300"

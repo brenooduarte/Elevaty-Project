@@ -12,7 +12,7 @@ const BarraPesquisa = ({ search }: BarraPesquisaProps) => {
   };
 
   return (
-    <div className="flex items-center float-right mr-10 w-96 mx-auto bg-white rounded-full" >
+    <div className="flex items-center float-right w-96 mx-auto bg-white rounded-full" >
       <div className="w-full">
         <input
           type="search"

@@ -16,7 +16,7 @@ const Produto = () => {
   const [offset, setOffset] = useState(0);
 
   const LIMIT = 10;
-  const QUANTITY = 100;
+  const QUANTITY = 50;
 
   const context = useContext(ProdutoContext);
 
@@ -83,23 +83,19 @@ const Produto = () => {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center">
+    <div className="min-h-screen flex flex-col">
       
       <Cabecalho search={filtrarProdutos} />
       
-      <div className="m-3 flex flex-wrap mx-auto justify-center">
+      {produtosFiltrados.length > 0 
 
-        {produtosFiltrados.length > 0 
-
-        ? <TabelaProduto produtos={produtosFiltrados} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
-        : <TabelaProduto produtos={context?.produtos ? context?.produtos : []} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
-        
-        }
-
-        {openClose && <ProdutoDetalhado produto={produtoSelecionado} voltar={handleVoltar} />}
-
-      </div>
+      ? <TabelaProduto produtos={produtosFiltrados} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
+      : <TabelaProduto produtos={context?.produtos ? context?.produtos : []} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
       
+      }
+
+      {openClose && <ProdutoDetalhado produto={produtoSelecionado} voltar={handleVoltar} />}
+    
       <Paginacao limit={LIMIT} total={context?.produtos ? context?.produtos.length : 0} offset={offset} setOffset={setOffset} />
     </div>
   );

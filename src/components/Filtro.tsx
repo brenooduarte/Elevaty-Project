@@ -10,7 +10,7 @@ const Filtro = () => {
     const [precoMinimo, setprecoMinimo] = useState(0);
     const [precoMaximo, setprecoMaximo] = useState(0);
 
-    const QUANTITY = 100;
+    const QUANTITY = 50;
 
     const getProdutosPorPrecoMinimoEMaximo = async (e: React.SyntheticEvent) => {
         try {
@@ -30,7 +30,7 @@ const Filtro = () => {
     };
 
     return (
-        <div className="fixed left-0 top-0 flex items-center py-10 ml-20">
+        <div className="fixed z-50 left-20 top-0 flex items-center py-10">
             <div className="h-[280px] w-[220px] overflow-y-auto sm:rounded-2xl bg-gray-100">
                 <div className="m-8 max-w-[700px] mx-auto flex flex-col items-center space-y-4">
                     <div className="">

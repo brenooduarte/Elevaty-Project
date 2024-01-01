@@ -9,7 +9,7 @@ interface TabelaProdutoProps {
 
 const TabelaProduto = ({ produtos, removerProduto, visualizarProduto }: TabelaProdutoProps) => {
   return (
-    <div className="mt-5 drop-shadow-xl">
+    <div className="mt-5 drop-shadow-xl mx-auto">
         <div className="flex flex-col">
             <div className="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
                 <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
