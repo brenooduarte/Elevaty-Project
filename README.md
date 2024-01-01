@@ -14,6 +14,13 @@ $ git clone git@github.com:brenooduarte/Elevaty-Project.git && cd Elevaty-Projec
 Execute o seguinte comando para instalar as dependências:
 
 ```bash
+$ npm install
+```
+## Excutar Aplicação 
+
+Execute o seguinte comando para executar apliação:
+
+```bash
 $ npm run dev
 ```
 ## Acessar as telas da aplicação
