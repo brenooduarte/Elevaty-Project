@@ -10,7 +10,6 @@ import { ProdutoContext } from "../context/ProdutoContext";
 
 const Produto = () => {
 
-  const [produtosFiltrados, setProdutoFiltrados] = useState<IProduto[]>([]);
   const [produtoSelecionado, setProdutoSelecionado] = useState<IProduto>({description:"", ean:"", id:0, name:"", price:"", image:"", taxes:""});
   const [openClose, setOpenClose] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -24,56 +23,69 @@ const Produto = () => {
     setOpenClose(!openClose);
   };
 
-  useEffect(() => {
-    const getProdutos = async () => {
-      try {
-        const response = await axios.get<{ data: IProduto[] }>(`https://fakerapi.it/api/v1/products?_quantity=${QUANTITY}`);
-        context?.setProdutos(response.data.data);
-        
-      } catch (error) {
-        toast.error(`Erro ao obter produtos: ${error}`)
-      }
-    };
+  const getProdutos = async () => {
+    try {
+      const response = await axios.get<{ data: IProduto[] }>(`https://fakerapi.it/api/v1/products?_quantity=${QUANTITY}`);
+      
+      const produtos = response.data.data;
+      context?.setQuantidadeProdutosRecebidos(produtos.length);
 
+      const offset = 0;
+      const produtosDaPagina = produtos.slice(offset, offset + LIMIT) || [];
+  
+      context?.setProdutosDaPagina(produtosDaPagina) 
+      context?.setProdutos(produtos);
+      
+    } catch (error) {
+      toast.error(`Erro ao obter produtos: ${error}`)
+    }
+  };
+
+  useEffect(() => {
     getProdutos();    
   }, []);
 
   const filtrarProdutos = (searchInput: string) => {
     
-    const produtosEncontrados = context?.produtos.filter((produto) => {
-      const nome = produto.name.toUpperCase();
-      const busca = searchInput.toUpperCase();
-      
-      return nome.startsWith(busca)
-    });
+    if (searchInput) {
+      const produtosEncontrados = context?.produtos.filter((produto) => {
+        const nome = produto.name.toUpperCase();
+        const busca = searchInput.toUpperCase();
+        
+        return nome.startsWith(busca)
+      });
 
-    if (produtosEncontrados) {
-      setProdutoFiltrados(produtosEncontrados);
-      if (produtosEncontrados.length == 0) {
-        toast.error(`Nenhum resultado encontrado para: ${searchInput}`)
+      if (produtosEncontrados) {
+        context?.setProdutosDaPagina(produtosEncontrados);
+        context?.setQuantidadeProdutosRecebidos(produtosEncontrados.length);
+
+        if (produtosEncontrados.length == 0) {
+          toast.error(`Nenhum resultado encontrado para: ${searchInput}`)
+        }
       }
     }
 
   };
 
   const removerProduto = (idProduto: number) => {  
-    const produtoEncontrado = context?.produtos.find((produto) => produto.id === Number(idProduto));
+    const produtoEncontrado = context?.produtosDaPagina.find((produto) => produto.id === Number(idProduto));
   
     if (produtoEncontrado) {
-      const listaAtualizada = context?.produtos.filter((produto) => produto.id !== Number(idProduto));
-  
-      if (listaAtualizada) {
-        context?.setProdutos(listaAtualizada);
-    
-        if (produtosFiltrados && produtosFiltrados.length > 0) {
-          setProdutoFiltrados(listaAtualizada);
-        }
+      const listaProdutosDaPaginaAtualizada = context?.produtosDaPagina.filter((produto) => produto.id !== Number(idProduto));
+      const listaProdutosAtualizada = context?.produtos.filter((produto) => produto.id !== Number(idProduto));
+
+      if (listaProdutosDaPaginaAtualizada && listaProdutosAtualizada) {
+
+        context?.setProdutos(listaProdutosAtualizada);
+        context?.setProdutosDaPagina(listaProdutosDaPaginaAtualizada);
+        context?.setQuantidadeProdutosRecebidos(context?.produtos.length);
+
       }
     }
   };
   
   const visualizarProduto = (idProduto: number) => {
-    const produtoEncontrado = context?.produtos.find((produto) => produto.id === Number(idProduto));
+    const produtoEncontrado = context?.produtosDaPagina.find((produto) => produto.id === Number(idProduto));
   
     if (produtoEncontrado) {
       setProdutoSelecionado(produtoEncontrado);
@@ -87,16 +99,11 @@ const Produto = () => {
       
       <Cabecalho search={filtrarProdutos} />
       
-      {produtosFiltrados.length > 0 
-
-      ? <TabelaProduto produtos={produtosFiltrados} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
-      : <TabelaProduto produtos={context?.produtos ? context?.produtos : []} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
-      
-      }
+      <TabelaProduto produtos={context?.produtosDaPagina ? context?.produtosDaPagina : []} removerProduto={removerProduto} visualizarProduto={visualizarProduto}/>
 
       {openClose && <ProdutoDetalhado produto={produtoSelecionado} voltar={handleVoltar} />}
     
-      <Paginacao limit={LIMIT} total={context?.produtos ? context?.produtos.length : 0} offset={offset} setOffset={setOffset} />
+      <Paginacao limit={LIMIT} total={context?.quantidadeProdutosRecebidos ? context?.quantidadeProdutosRecebidos : 0} offset={offset} setOffset={setOffset} />
     </div>
   );
 };

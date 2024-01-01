@@ -6,11 +6,13 @@ import { ProdutoContext } from "../context/ProdutoContext";
 
 const Filtro = () => {
 
-    const context = useContext(ProdutoContext);
     const [precoMinimo, setprecoMinimo] = useState(0);
     const [precoMaximo, setprecoMaximo] = useState(0);
 
+    const LIMIT = 10;
     const QUANTITY = 50;
+    
+    const context = useContext(ProdutoContext);
 
     const getProdutosPorPrecoMinimoEMaximo = async (e: React.SyntheticEvent) => {
         try {
@@ -21,12 +23,16 @@ const Filtro = () => {
 
             const listaProdutos = response.data.data;
 
-            const listaProdutosCorreta = listaProdutos.filter((produto) => {
+            const listaProdutosComFaixaDePrecoCorreta = listaProdutos.filter((produto) => {
                 const preco = Number.parseFloat(produto.price)
                 if (preco >= precoMinimo && preco <= precoMaximo) return produto;
             });
 
-            context?.setProdutos(listaProdutosCorreta);
+            const offset = 0;
+            const produtosDaPagina = listaProdutosComFaixaDePrecoCorreta.slice(offset, offset + LIMIT) || [];
+
+            context?.setProdutosDaPagina(produtosDaPagina);
+            context?.setQuantidadeProdutosRecebidos(listaProdutosComFaixaDePrecoCorreta.length)
           
             if (context?.produtos.length == 0) {
                 toast.error("Nenhum resultado encontrado")

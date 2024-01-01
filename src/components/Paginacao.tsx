@@ -14,14 +14,14 @@ const MAX_LEFT = (MAX_ITEMS - 1) / 2;
 const Paginacao = ({ limit, total, offset, setOffset }: PaginacaoProps) => {
   const [paginaAtual, setPaginaAtual] = useState(1);
 
-  const paginas = Math.ceil(total / limit);
+  const totalPagina = Math.ceil(total / limit);
   const primeiro = Math.max(paginaAtual - MAX_LEFT, 1);
 
   const context = useContext(ProdutoContext);
 
   const renderizarPaginas = () => {
-    const ultimaPagina = Math.min(primeiro + MAX_ITEMS - 1, paginas);
-  
+    const ultimaPagina = Math.min(primeiro + MAX_ITEMS - 1, totalPagina);
+
     return Array.from({ length: ultimaPagina - primeiro + 1 })
       .map((_, index) => index + primeiro)
       .map((pagina) => (
@@ -72,7 +72,7 @@ const Paginacao = ({ limit, total, offset, setOffset }: PaginacaoProps) => {
           <button
             className="px-3 py-2 mx-1 bg-white border border-gray-400"
             onClick={() => handlePageClick(paginaAtual + 1)}
-            disabled={paginaAtual === paginas}
+            disabled={paginaAtual === totalPagina}
           >
             Próximo
           </button>
