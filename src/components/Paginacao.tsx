@@ -27,8 +27,8 @@ const Paginacao = ({ limit, total, offset, setOffset }: PaginacaoProps) => {
       .map((pagina) => (
         <li key={pagina}>
           <button
-            className={`px-3 py-2 mx-1 bg-white border border-gray-400 ${
-              pagina === paginaAtual ? "bg-gray-900 text-white border-0" : ""
+            className={`px-3 py-2 mx-1 bg-white border border-gray-800 ${
+              pagina === paginaAtual ? "bg-gray-700 text-white border-0" : ""
             }`}
             onClick={() => handlePageClick(pagina)}
           >
@@ -43,7 +43,7 @@ const Paginacao = ({ limit, total, offset, setOffset }: PaginacaoProps) => {
     const novoOffset = (numeroPagina - 1) * limit;
     const produtosDaPagina = context?.produtos.slice(novoOffset, novoOffset + limit) || [];
 
-    context?.setProdutosDaPagina(produtosDaPagina) //rever essa situação de produtosDaPagina
+    context?.setProdutosDaPagina(produtosDaPagina) 
 
     setPaginaAtual(numeroPagina);
     setOffset((numeroPagina - 1) * limit);

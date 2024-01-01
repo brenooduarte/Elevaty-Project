@@ -18,7 +18,15 @@ const Filtro = () => {
 
             const response = await axios.get<{ data: IProduto[] }>
                 (`https://fakerapi.it/api/v1/products?_price_min=${precoMinimo}&_price_max=${precoMaximo}&_quantity=${QUANTITY}`);
-            context?.setProdutos(response.data.data);
+
+            const listaProdutos = response.data.data;
+
+            const listaProdutosCorreta = listaProdutos.filter((produto) => {
+                const preco = Number.parseFloat(produto.price)
+                if (preco >= precoMinimo && preco <= precoMaximo) return produto;
+            });
+
+            context?.setProdutos(listaProdutosCorreta);
           
             if (context?.produtos.length == 0) {
                 toast.error("Nenhum resultado encontrado")
